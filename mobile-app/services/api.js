@@ -1,8 +1,8 @@
 import axios from 'axios';
 
 const api = axios.create({
-  // baseURL: 'http://localhost:5000/api', // Use this for web
-  baseURL: `http://${[IP_ADDRESS]}/api`, // Use this for mobile/LAN
+  baseURL: 'http://localhost:5000/api', // Use this for web
+  // baseURL: `http://${[IP_ADDRESS]}/api`, // Use this for mobile
   timeout: 10000
 });
 

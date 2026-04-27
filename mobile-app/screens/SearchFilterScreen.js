@@ -1,6 +1,7 @@
 import React, { useContext, useState, useMemo } from 'react';
-import { View, Text, TextInput, TouchableOpacity, FlatList, Alert } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, FlatList, Alert, StyleSheet } from 'react-native';
 import { ExpenseContext } from '../context/ExpenseContext';
+import { theme } from '../theme';
 
 const categories = ['Food', 'Travel', 'Shopping', 'Bills', 'Entertainment', 'Others'];
 
@@ -29,84 +30,84 @@ const SearchFilterScreen = ({ navigation }) => {
   };
 
   const renderItem = ({ item }) => (
-    <View className="bg-surface rounded-3xl p-5 mb-3 flex-row justify-between items-start">
-      <View className="flex-1 pr-3">
-        <Text className="text-primary font-extrabold text-lg">${item.amount.toFixed(2)}</Text>
-        <Text className="text-text font-bold">{item.category}</Text>
-        <Text className="text-textSecondary mt-1">{item.note || 'No note provided'}</Text>
+    <View style={styles.itemCard}>
+      <View style={styles.itemContent}>
+        <Text style={styles.itemAmount}>${item.amount.toFixed(2)}</Text>
+        <Text style={styles.itemCategory}>{item.category}</Text>
+        <Text style={styles.itemNote}>{item.note || 'No note provided'}</Text>
       </View>
-      <View className="items-end">
-        <TouchableOpacity className="bg-blue-600 rounded-2xl px-3 py-2 mb-2" onPress={() => navigation.navigate('Add', { expense: item })}>
-          <Text className="text-white font-bold">Edit</Text>
+      <View style={styles.itemActions}>
+        <TouchableOpacity style={styles.editButton} onPress={() => navigation.navigate('Add', { expense: item })}>
+          <Text style={styles.editButtonText}>Edit</Text>
         </TouchableOpacity>
-        <TouchableOpacity className="bg-gray-600 rounded-2xl px-3 py-2" onPress={() => confirmDelete(item._id)}>
-          <Text className="text-red-400 font-bold">Delete</Text>
+        <TouchableOpacity style={styles.deleteButton} onPress={() => confirmDelete(item._id)}>
+          <Text style={styles.deleteButtonText}>Delete</Text>
         </TouchableOpacity>
       </View>
     </View>
   );
 
   return (
-    <View className="flex-1 bg-secondary p-5">
-      <View className="mb-5">
-        <Text className="text-text text-3xl font-extrabold">Search & Filter</Text>
-        <Text className="text-textSecondary mt-2">Find and manage your expenses</Text>
+    <View style={styles.container}>
+      <View style={styles.header}>
+        <Text style={styles.headerTitle}>Search & Filter</Text>
+        <Text style={styles.headerSubtitle}>Find and manage your expenses</Text>
       </View>
-      <View className="bg-surface rounded-3xl p-5 mb-5">
+      <View style={styles.filterCard}>
         <TextInput
+          style={styles.searchInput}
           value={searchText}
           onChangeText={setSearchText}
           placeholder="Search by note or category"
           placeholderTextColor="#94a3b8"
-          className="bg-gray-700 text-text rounded-2xl px-4 py-3 mb-4"
         />
-        <Text className="text-textSecondary mb-2">Filter by Category</Text>
-        <View className="flex-row flex-wrap gap-2 mb-4">
+        <Text style={styles.filterLabel}>Filter by Category</Text>
+        <View style={styles.categoryContainer}>
           <TouchableOpacity
-            className={`bg-gray-700 px-3 py-2 rounded-2xl ${selectedCategory === '' ? 'bg-primary' : ''}`}
+            style={[styles.categoryBadge, selectedCategory === '' && styles.categoryBadgeActive]}
             onPress={() => setSelectedCategory('')}
           >
-            <Text className={`font-bold ${selectedCategory === '' ? 'text-secondary' : 'text-textSecondary'}`}>All</Text>
+            <Text style={[styles.categoryText, selectedCategory === '' && styles.categoryTextActive]}>All</Text>
           </TouchableOpacity>
           {categories.map((cat) => (
             <TouchableOpacity
               key={cat}
-              className={`bg-gray-700 px-3 py-2 rounded-2xl ${selectedCategory === cat ? 'bg-primary' : ''}`}
+              style={[styles.categoryBadge, selectedCategory === cat && styles.categoryBadgeActive]}
               onPress={() => setSelectedCategory(cat)}
             >
-              <Text className={`font-bold ${selectedCategory === cat ? 'text-secondary' : 'text-textSecondary'}`}>{cat}</Text>
+              <Text style={[styles.categoryText, selectedCategory === cat && styles.categoryTextActive]}>{cat}</Text>
             </TouchableOpacity>
           ))}
         </View>
-        <View className="flex-row gap-3">
-          <View className="flex-1">
-            <Text className="text-textSecondary mb-2">Min Amount</Text>
+        <View style={styles.amountRow}>
+          <View style={styles.amountCol}>
+            <Text style={styles.filterLabel}>Min Amount</Text>
             <TextInput
+              style={styles.amountInput}
               value={minAmount}
               onChangeText={setMinAmount}
               placeholder="0"
               placeholderTextColor="#94a3b8"
               keyboardType="numeric"
-              className="bg-gray-700 text-text rounded-2xl px-4 py-3"
             />
           </View>
-          <View className="flex-1">
-            <Text className="text-textSecondary mb-2">Max Amount</Text>
+          <View style={styles.amountCol}>
+            <Text style={styles.filterLabel}>Max Amount</Text>
             <TextInput
+              style={styles.amountInput}
               value={maxAmount}
               onChangeText={setMaxAmount}
               placeholder="1000"
               placeholderTextColor="#94a3b8"
               keyboardType="numeric"
-              className="bg-gray-700 text-text rounded-2xl px-4 py-3"
             />
           </View>
         </View>
       </View>
-      <Text className="text-text font-bold mb-3">Results ({filteredExpenses.length})</Text>
+      <Text style={styles.resultsHeader}>Results ({filteredExpenses.length})</Text>
       {filteredExpenses.length === 0 ? (
-        <View className="flex-1 justify-center items-center">
-          <Text className="text-textSecondary text-center">No expenses match your filters.</Text>
+        <View style={styles.emptyContainer}>
+          <Text style={styles.emptyText}>No expenses match your filters.</Text>
         </View>
       ) : (
         <FlatList
@@ -119,5 +120,143 @@ const SearchFilterScreen = ({ navigation }) => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: theme.colors.secondary,
+    padding: 20,
+  },
+  header: {
+    marginBottom: 20,
+  },
+  headerTitle: {
+    color: theme.colors.text,
+    fontSize: 30, // text-3xl
+    fontWeight: '800',
+  },
+  headerSubtitle: {
+    color: theme.colors.textSecondary,
+    marginTop: 8,
+  },
+  filterCard: {
+    backgroundColor: theme.colors.surface,
+    borderRadius: 24, // rounded-3xl
+    padding: 20,
+    marginBottom: 20,
+  },
+  searchInput: {
+    backgroundColor: '#374151', // gray-700
+    color: theme.colors.text,
+    borderRadius: 16,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    marginBottom: 16,
+  },
+  filterLabel: {
+    color: theme.colors.textSecondary,
+    marginBottom: 8,
+  },
+  categoryContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 8,
+    marginBottom: 16,
+  },
+  categoryBadge: {
+    backgroundColor: '#374151',
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderRadius: 16,
+  },
+  categoryBadgeActive: {
+    backgroundColor: theme.colors.primary,
+  },
+  categoryText: {
+    fontWeight: 'bold',
+    color: theme.colors.textSecondary,
+  },
+  categoryTextActive: {
+    color: theme.colors.secondary,
+  },
+  amountRow: {
+    flexDirection: 'row',
+    gap: 12,
+  },
+  amountCol: {
+    flex: 1,
+  },
+  amountInput: {
+    backgroundColor: '#374151',
+    color: theme.colors.text,
+    borderRadius: 16,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+  },
+  resultsHeader: {
+    color: theme.colors.text,
+    fontWeight: 'bold',
+    marginBottom: 12,
+  },
+  emptyContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  emptyText: {
+    color: theme.colors.textSecondary,
+    textAlign: 'center',
+  },
+  itemCard: {
+    backgroundColor: theme.colors.surface,
+    borderRadius: 24,
+    padding: 20,
+    marginBottom: 12,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+  },
+  itemContent: {
+    flex: 1,
+    paddingRight: 12,
+  },
+  itemAmount: {
+    color: theme.colors.primary,
+    fontWeight: '800',
+    fontSize: 18, // text-lg
+  },
+  itemCategory: {
+    color: theme.colors.text,
+    fontWeight: 'bold',
+  },
+  itemNote: {
+    color: theme.colors.textSecondary,
+    marginTop: 4,
+  },
+  itemActions: {
+    alignItems: 'flex-end',
+  },
+  editButton: {
+    backgroundColor: '#2563eb', // blue-600
+    borderRadius: 16,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    marginBottom: 8,
+  },
+  editButtonText: {
+    color: '#ffffff',
+    fontWeight: 'bold',
+  },
+  deleteButton: {
+    backgroundColor: '#4b5563', // gray-600
+    borderRadius: 16,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+  },
+  deleteButtonText: {
+    color: '#f87171', // red-400
+    fontWeight: 'bold',
+  }
+});
 
 export default SearchFilterScreen;

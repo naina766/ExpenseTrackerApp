@@ -1,11 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, ScrollView, Alert } from 'react-native';
+import { View, Text, TouchableOpacity, ScrollView, Alert, StyleSheet } from 'react-native';
 import { AuthContext } from '../context/AuthContext';
 import { ExpenseContext } from '../context/ExpenseContext';
 import { useTheme } from '../context/ThemeContext';
 import * as FileSystem from 'expo-file-system';
 import * as Print from 'expo-print';
 import { setupDailyReminder, cancelDailyReminder, getScheduledReminders } from '../services/notifications';
+import { theme as appTheme } from '../theme';
 
 const ProfileScreen = () => {
   const { user, logout } = useContext(AuthContext);
@@ -62,67 +63,118 @@ const ProfileScreen = () => {
   };
 
   return (
-    <ScrollView className="flex-1 bg-secondary p-5">
-      <View className="bg-surface rounded-3xl p-6 mb-6">
-        <Text className="text-textSecondary mb-2">Name</Text>
-        <Text className="text-text text-xl font-bold mb-4">{user?.name}</Text>
-        <Text className="text-textSecondary mb-2">Email</Text>
-        <Text className="text-text text-xl font-bold mb-4">{user?.email}</Text>
+    <ScrollView style={styles.container}>
+      <View style={styles.card}>
+        <Text style={styles.label}>Name</Text>
+        <Text style={styles.value}>{user?.name}</Text>
+        <Text style={styles.label}>Email</Text>
+        <Text style={styles.value}>{user?.email}</Text>
       </View>
 
-      <View className="bg-surface rounded-3xl p-6 mb-6">
-        <Text className="text-text text-xl font-bold mb-4">Settings</Text>
+      <View style={styles.card}>
+        <Text style={styles.sectionTitle}>Settings</Text>
         <TouchableOpacity
-          className="bg-primary rounded-xl p-4 mb-4"
+          style={styles.button}
           onPress={toggleTheme}
         >
-          <Text className="text-text text-center font-bold">
+          <Text style={styles.buttonText}>
             Switch to {isDark ? 'Light' : 'Dark'} Mode
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
-          className="bg-primary rounded-xl p-4 mb-4"
+          style={styles.button}
           onPress={toggleReminder}
         >
-          <Text className="text-text text-center font-bold">
+          <Text style={styles.buttonText}>
             {reminderEnabled ? 'Disable' : 'Enable'} Daily Reminder
           </Text>
         </TouchableOpacity>
       </View>
 
-      <View className="bg-surface rounded-3xl p-6 mb-6">
-        <Text className="text-text text-xl font-bold mb-4">Export Data</Text>
+      <View style={styles.card}>
+        <Text style={styles.sectionTitle}>Export Data</Text>
         <TouchableOpacity
-          className="bg-primary rounded-xl p-4 mb-4"
+          style={styles.button}
           onPress={handleExportCSV}
         >
-          <Text className="text-text text-center font-bold">Export to CSV</Text>
+          <Text style={styles.buttonText}>Export to CSV</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          className="bg-primary rounded-xl p-4 mb-4"
+          style={styles.button}
           onPress={handleExportPDF}
         >
-          <Text className="text-text text-center font-bold">Export to PDF</Text>
+          <Text style={styles.buttonText}>Export to PDF</Text>
         </TouchableOpacity>
       </View>
 
-      <View className="bg-surface rounded-3xl p-6 mb-6">
-        <Text className="text-text text-xl font-bold mb-4">App Features</Text>
-        <Text className="text-textSecondary mb-2">• Secure login with JWT token</Text>
-        <Text className="text-textSecondary mb-2">• Add, view, edit, delete expenses</Text>
-        <Text className="text-textSecondary mb-2">• Dashboard insights and category breakdown</Text>
-        <Text className="text-textSecondary mb-2">• Search and filter expenses</Text>
-        <Text className="text-textSecondary mb-2">• Dark/Light theme toggle</Text>
-        <Text className="text-textSecondary mb-2">• Export expenses to PDF/CSV</Text>
-        <Text className="text-textSecondary mb-2">• Push notifications for reminders</Text>
-        <Text className="text-textSecondary mb-2">• Offline sync capabilities</Text>
+      <View style={styles.card}>
+        <Text style={styles.sectionTitle}>App Features</Text>
+        <Text style={styles.featureItem}>• Secure login with JWT token</Text>
+        <Text style={styles.featureItem}>• Add, view, edit, delete expenses</Text>
+        <Text style={styles.featureItem}>• Dashboard insights and category breakdown</Text>
+        <Text style={styles.featureItem}>• Search and filter expenses</Text>
+        <Text style={styles.featureItem}>• Dark/Light theme toggle</Text>
+        <Text style={styles.featureItem}>• Export expenses to PDF/CSV</Text>
+        <Text style={styles.featureItem}>• Push notifications for reminders</Text>
+        <Text style={styles.featureItem}>• Offline sync capabilities</Text>
       </View>
 
-      <TouchableOpacity className="bg-accent rounded-xl p-4" onPress={logout}>
-        <Text className="text-text text-center font-bold">Logout</Text>
+      <TouchableOpacity style={styles.logoutButton} onPress={logout}>
+        <Text style={styles.buttonText}>Logout</Text>
       </TouchableOpacity>
     </ScrollView>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: appTheme.colors.secondary,
+    padding: 20, // p-5
+  },
+  card: {
+    backgroundColor: appTheme.colors.surface,
+    borderRadius: 24, // rounded-3xl
+    padding: 24, // p-6
+    marginBottom: 24, // mb-6
+  },
+  label: {
+    color: appTheme.colors.textSecondary,
+    marginBottom: 8, // mb-2
+  },
+  value: {
+    color: appTheme.colors.text,
+    fontSize: 20, // text-xl
+    fontWeight: 'bold',
+    marginBottom: 16, // mb-4
+  },
+  sectionTitle: {
+    color: appTheme.colors.text,
+    fontSize: 20, // text-xl
+    fontWeight: 'bold',
+    marginBottom: 16, // mb-4
+  },
+  featureItem: {
+    color: appTheme.colors.textSecondary,
+    marginBottom: 8,
+  },
+  button: {
+    backgroundColor: appTheme.colors.primary,
+    borderRadius: 12, // rounded-xl
+    padding: 16, // p-4
+    marginBottom: 16, // mb-4
+  },
+  buttonText: {
+    color: appTheme.colors.text,
+    textAlign: 'center',
+    fontWeight: 'bold',
+  },
+  logoutButton: {
+    backgroundColor: appTheme.colors.accent,
+    borderRadius: 12, // rounded-xl
+    padding: 16, // p-4
+    marginBottom: 40,
+  }
+});
 
 export default ProfileScreen;

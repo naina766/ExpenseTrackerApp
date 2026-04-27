@@ -42,12 +42,3 @@ export default function App() {
     </SafeAreaProvider>
   );
 }
-// import { View, Text } from "react-native";
-
-// export default function App() {
-//   return (
-//     <View className='flex-1 justify-center items-center'>
-//       <Text className='text-3xl font-bold text-slate-100'>Minimal App Working ✅</Text>
-//     </View>
-//   );
-// }
