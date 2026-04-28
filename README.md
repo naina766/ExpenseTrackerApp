@@ -22,11 +22,18 @@ This app allows users to register, sign in, add/manage expenses, view expense an
 
 *(Replace the placeholder images below with actual screenshots of your app by uploading them to your repository or an image host)*
 
-<div style="display: flex; flex-direction: row; flex-wrap: wrap; gap: 10px;">
-  <img src="https://via.placeholder.com/250x500.png?text=Login+Screen" alt="Login Screen" width="200" />
-  <img src="https://via.placeholder.com/250x500.png?text=Dashboard" alt="Dashboard" width="200" />
-  <img src="https://via.placeholder.com/250x500.png?text=Add+Expense" alt="Add Expense" width="200" />
-  <img src="https://via.placeholder.com/250x500.png?text=Search+Filter" alt="Search and Filter" width="200" />
+<div style="display: flex; flex-direction: row; flex-wrap: wrap; gap: "10px";">
+  <h3> Login Screen </h3>
+  <img width="200" height="300" alt="Login Screen" src="https://github.com/user-attachments/assets/ee5809e9-605a-4bb6-913c-d8d2cf003d6e" />
+  
+  <h3> Dashboard Screen </h3>
+  <img width="200" height="300" alt="Dashboard" src="https://github.com/user-attachments/assets/5e639600-b64f-4b18-bee6-1d307db87a6c" />
+
+  <h3> Add Expense Screen </h3>
+  <img width="200" height="300" alt="Add Expense" src="https://github.com/user-attachments/assets/8fd614cf-c41d-4126-9e19-a01053222b02" />
+
+  <h3> Search and Filter Screen </h3>
+<img width="200" height="300" alt="Search and Filter" src="https://github.com/user-attachments/assets/91d9be39-6b06-4ca2-8711-3e871acea10c" />
 </div>
 
 ## Tech Stack
