@@ -70,18 +70,23 @@ const AddExpenseScreen = ({ route, navigation }) => {
         note: data.note,
       };
       if (data.date) expenseData.date = data.date;
+const isEditing = editingExpense?._id;
 
-      if (editingExpense) {
-        await updateExpense(editingExpense._id, expenseData);
-        Alert.alert('Success', 'Expense updated successfully');
-        navigation.goBack();
-      } else {
-        await addExpense(expenseData);
-        reset();
-        Alert.alert('Success', 'Expense added successfully');
-      }
+if (isEditing) {
+  await updateExpense(editingExpense._id, expenseData);
+
+  // 🔥 THIS LINE FIXES YOUR BUG
+  navigation.setParams({ expense: undefined });
+
+  Alert.alert('Success', 'Expense updated successfully');
+  navigation.goBack();
+} else {
+  await addExpense(expenseData);
+  reset();
+  Alert.alert('Success', 'Expense added successfully');
+}
     } catch (err) {
-      Alert.alert('Error', error || 'Unable to save expense');
+      Alert.alert('Error', err.message || 'Unable to save expense');
     }
   };
 
@@ -173,7 +178,7 @@ const AddExpenseScreen = ({ route, navigation }) => {
             disabled={loading}
           >
             <Text style={styles.buttonText}>
-              {loading ? 'Saving...' : editingExpense ? 'Update Expense' : 'Save Expense'}
+              {editingExpense ? 'Update' : 'Save'}
             </Text>
           </TouchableOpacity>
         </Animated.View>

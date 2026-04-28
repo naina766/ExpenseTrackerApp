@@ -18,6 +18,17 @@ This app allows users to register, sign in, add/manage expenses, view expense an
 - Centralized API service with Axios
 - Error handling and loading states
 
+## Screenshots
+
+*(Replace the placeholder images below with actual screenshots of your app by uploading them to your repository or an image host)*
+
+<div style="display: flex; flex-direction: row; flex-wrap: wrap; gap: 10px;">
+  <img src="https://via.placeholder.com/250x500.png?text=Login+Screen" alt="Login Screen" width="200" />
+  <img src="https://via.placeholder.com/250x500.png?text=Dashboard" alt="Dashboard" width="200" />
+  <img src="https://via.placeholder.com/250x500.png?text=Add+Expense" alt="Add Expense" width="200" />
+  <img src="https://via.placeholder.com/250x500.png?text=Search+Filter" alt="Search and Filter" width="200" />
+</div>
+
 ## Tech Stack
 
 - Frontend: React Native Expo, React Navigation, Context API, Axios, AsyncStorage, NativeWind, Zod, react-native-chart-kit

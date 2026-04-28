@@ -64,6 +64,9 @@ exports.updateExpense = async (req, res) => {
 };
 
 exports.deleteExpense = async (req, res) => {
+   console.log("DELETE API HIT");
+  console.log("PARAM ID:", req.params.id);
+  console.log("USER:", req.user?.id);
   try {
     const expense = await Expense.findOneAndDelete({ _id: req.params.id, user: req.user.id });
     if (!expense) {

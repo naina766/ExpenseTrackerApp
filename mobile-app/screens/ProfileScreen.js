@@ -6,12 +6,14 @@ import { useTheme } from '../context/ThemeContext';
 import * as FileSystem from 'expo-file-system';
 import * as Print from 'expo-print';
 import { setupDailyReminder, cancelDailyReminder, getScheduledReminders } from '../services/notifications';
-import { theme as appTheme } from '../theme';
 
 const ProfileScreen = () => {
   const { user, logout } = useContext(AuthContext);
   const { exportToCSV, exportToPDF } = useContext(ExpenseContext);
-  const { theme, toggleTheme, isDark } = useTheme();
+
+  // ✅ FIX: added colors here
+  const { theme, toggleTheme, isDark, colors } = useTheme();
+
   const [reminderEnabled, setReminderEnabled] = useState(false);
 
   useEffect(() => {
@@ -45,7 +47,10 @@ const ProfileScreen = () => {
       const fileName = `expenses_${new Date().toISOString().split('T')[0]}.csv`;
       const fileUri = `${FileSystem.documentDirectory}${fileName}`;
 
-      await FileSystem.writeAsStringAsync(fileUri, csvData, { encoding: FileSystem.EncodingType.UTF8 });
+      await FileSystem.writeAsStringAsync(fileUri, csvData, {
+        encoding: FileSystem.EncodingType.UTF8,
+      });
+
       Alert.alert('Success', `CSV exported to ${fileUri}`);
     } catch (error) {
       Alert.alert('Error', 'Failed to export CSV');
@@ -63,65 +68,65 @@ const ProfileScreen = () => {
   };
 
   return (
-    <ScrollView style={styles.container}>
-      <View style={styles.card}>
-        <Text style={styles.label}>Name</Text>
-        <Text style={styles.value}>{user?.name}</Text>
-        <Text style={styles.label}>Email</Text>
-        <Text style={styles.value}>{user?.email}</Text>
+    <ScrollView style={[styles.container, { backgroundColor: colors.secondary }]}>
+      
+      <View style={[styles.card, { backgroundColor: colors.surface }]}>
+        <Text style={[styles.label, { color: colors.textSecondary }]}>Name</Text>
+        <Text style={[styles.value, { color: colors.text }]}>{user?.name}</Text>
+
+        <Text style={[styles.label, { color: colors.textSecondary }]}>Email</Text>
+        <Text style={[styles.value, { color: colors.text }]}>{user?.email}</Text>
       </View>
 
-      <View style={styles.card}>
-        <Text style={styles.sectionTitle}>Settings</Text>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={toggleTheme}
-        >
-          <Text style={styles.buttonText}>
+      <View style={[styles.card, { backgroundColor: colors.surface }]}>
+        <Text style={[styles.sectionTitle, { color: colors.text }]}>Settings</Text>
+
+        <TouchableOpacity style={[styles.button, { backgroundColor: colors.primary }]} onPress={toggleTheme}>
+          <Text style={[styles.buttonText, { color: colors.text }]}>
             Switch to {isDark ? 'Light' : 'Dark'} Mode
           </Text>
         </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={toggleReminder}
-        >
-          <Text style={styles.buttonText}>
+
+        <TouchableOpacity style={[styles.button, { backgroundColor: colors.primary }]} onPress={toggleReminder}>
+          <Text style={[styles.buttonText, { color: colors.text }]}>
             {reminderEnabled ? 'Disable' : 'Enable'} Daily Reminder
           </Text>
         </TouchableOpacity>
       </View>
 
-      <View style={styles.card}>
-        <Text style={styles.sectionTitle}>Export Data</Text>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={handleExportCSV}
-        >
-          <Text style={styles.buttonText}>Export to CSV</Text>
+      <View style={[styles.card, { backgroundColor: colors.surface }]}>
+        <Text style={[styles.sectionTitle, { color: colors.text }]}>Export Data</Text>
+
+        <TouchableOpacity style={[styles.button, { backgroundColor: colors.primary }]} onPress={handleExportCSV}>
+          <Text style={[styles.buttonText, { color: colors.text }]}>Export to CSV</Text>
         </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={handleExportPDF}
-        >
-          <Text style={styles.buttonText}>Export to PDF</Text>
+
+        <TouchableOpacity style={[styles.button, { backgroundColor: colors.primary }]} onPress={handleExportPDF}>
+          <Text style={[styles.buttonText, { color: colors.text }]}>Export to PDF</Text>
         </TouchableOpacity>
       </View>
 
-      <View style={styles.card}>
-        <Text style={styles.sectionTitle}>App Features</Text>
-        <Text style={styles.featureItem}>• Secure login with JWT token</Text>
-        <Text style={styles.featureItem}>• Add, view, edit, delete expenses</Text>
-        <Text style={styles.featureItem}>• Dashboard insights and category breakdown</Text>
-        <Text style={styles.featureItem}>• Search and filter expenses</Text>
-        <Text style={styles.featureItem}>• Dark/Light theme toggle</Text>
-        <Text style={styles.featureItem}>• Export expenses to PDF/CSV</Text>
-        <Text style={styles.featureItem}>• Push notifications for reminders</Text>
-        <Text style={styles.featureItem}>• Offline sync capabilities</Text>
+      <View style={[styles.card, { backgroundColor: colors.surface }]}>
+        <Text style={[styles.sectionTitle, { color: colors.text }]}>App Features</Text>
+
+        <Text style={[styles.featureItem, { color: colors.textSecondary }]}>• Secure login with JWT token</Text>
+        <Text style={[styles.featureItem, { color: colors.textSecondary }]}>• Add, view, edit, delete expenses</Text>
+        <Text style={[styles.featureItem, { color: colors.textSecondary }]}>• Dashboard insights and category breakdown</Text>
+        <Text style={[styles.featureItem, { color: colors.textSecondary }]}>• Search and filter expenses</Text>
+        <Text style={[styles.featureItem, { color: colors.textSecondary }]}>• Dark/Light theme toggle</Text>
+        <Text style={[styles.featureItem, { color: colors.textSecondary }]}>• Export expenses to PDF/CSV</Text>
+        <Text style={[styles.featureItem, { color: colors.textSecondary }]}>• Push notifications for reminders</Text>
+        <Text style={[styles.featureItem, { color: colors.textSecondary }]}>• Offline sync capabilities</Text>
       </View>
 
-      <TouchableOpacity style={styles.logoutButton} onPress={logout}>
-        <Text style={styles.buttonText}>Logout</Text>
+      {/* ✅ FIX: replaced accent with primary */}
+      <TouchableOpacity
+        style={[styles.logoutButton, { backgroundColor: colors.primary }]}
+        onPress={logout}
+      >
+        <Text style={[styles.buttonText, { color: colors.text }]}>Logout</Text>
       </TouchableOpacity>
+
     </ScrollView>
   );
 };
@@ -129,52 +134,43 @@ const ProfileScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: appTheme.colors.secondary,
-    padding: 20, // p-5
+    padding: 20,
   },
   card: {
-    backgroundColor: appTheme.colors.surface,
-    borderRadius: 24, // rounded-3xl
-    padding: 24, // p-6
-    marginBottom: 24, // mb-6
+    borderRadius: 24,
+    padding: 24,
+    marginBottom: 24,
   },
   label: {
-    color: appTheme.colors.textSecondary,
-    marginBottom: 8, // mb-2
+    marginBottom: 8,
   },
   value: {
-    color: appTheme.colors.text,
-    fontSize: 20, // text-xl
+    fontSize: 20,
     fontWeight: 'bold',
-    marginBottom: 16, // mb-4
+    marginBottom: 16,
   },
   sectionTitle: {
-    color: appTheme.colors.text,
-    fontSize: 20, // text-xl
+    fontSize: 20,
     fontWeight: 'bold',
-    marginBottom: 16, // mb-4
+    marginBottom: 16,
   },
   featureItem: {
-    color: appTheme.colors.textSecondary,
     marginBottom: 8,
   },
   button: {
-    backgroundColor: appTheme.colors.primary,
-    borderRadius: 12, // rounded-xl
-    padding: 16, // p-4
-    marginBottom: 16, // mb-4
+    borderRadius: 12,
+    padding: 16,
+    marginBottom: 16,
   },
   buttonText: {
-    color: appTheme.colors.text,
     textAlign: 'center',
     fontWeight: 'bold',
   },
   logoutButton: {
-    backgroundColor: appTheme.colors.accent,
-    borderRadius: 12, // rounded-xl
-    padding: 16, // p-4
+    borderRadius: 12,
+    padding: 16,
     marginBottom: 40,
-  }
+  },
 });
 
 export default ProfileScreen;
